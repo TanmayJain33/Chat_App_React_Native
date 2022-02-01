@@ -1,10 +1,9 @@
 const COLORS = {
-  white: '#fff',
-  lightGreen: '#4BEE70',
-  red: '#D84035',
-  warning: 'rgb(231,76,60)',
+  white: '#ffffff',
+  lightGreen: '#00ff00',
   black: '#000000',
-  darkGray: 'rgb(46,46,46)',
+  red: '#ff0000',
+  grey: '#aaa',
 };
 
 export default COLORS;
