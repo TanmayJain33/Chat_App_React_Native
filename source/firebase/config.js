@@ -1,10 +1,11 @@
 import Firebase from '@react-native-firebase/app';
+import Config from 'react-native-config';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyB8itcYC0f4x_9dGRfLTWptOQX4KKMBvuA',
-  databaseURL: 'https://chatapp-b82da-default-rtdb.firebaseio.com/',
-  projectId: 'chatapp-b82da',
-  appId: '1:738477874856:android:cf2aa224cfe8d412b82c9d',
+  apiKey: Config.FIREBASE_API_KEY,
+  databaseURL: Config.FIREBASE_DATABASE_URL,
+  projectId: Config.FIREBASE_PROJECT_ID,
+  appId: Config.FIREBASE_APP_ID,
 };
 
 export default Firebase.initializeApp(firebaseConfig);

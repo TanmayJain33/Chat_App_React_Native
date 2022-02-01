@@ -1,3 +1,10 @@
-export const WARNING = 'rgb(231, 76, 60)';
-export const BLACK = 'rgb(0, 0, 0)';
-export const DARK_GRAY = 'rgb(46, 46, 46)';
+const COLORS = {
+  white: '#fff',
+  lightGreen: '#4BEE70',
+  red: '#D84035',
+  warning: 'rgb(231,76,60)',
+  black: '#000000',
+  darkGray: 'rgb(46,46,46)',
+};
+
+export default COLORS;
