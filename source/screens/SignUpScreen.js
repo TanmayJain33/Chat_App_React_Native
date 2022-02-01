@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import CommonContainer from '../components/commonContainer';
 import CommonTextInput from '../components/commonTextInput';
@@ -6,6 +6,65 @@ import CommonButton from '../components/commonButton';
 import COLORS from '../utilities/colors';
 
 export default function SignUpScreen({navigation}) {
+  const [form, setForm] = useState({});
+  const [errors, setErrors] = useState({});
+
+  function onChange({name, value}) {
+    if (value != '') {
+      if (name == 'password') {
+        if (value.length < 6) {
+          setErrors(prev => {
+            return {
+              ...prev,
+              [name]: 'Password must be more than 5 characters long.',
+            };
+          });
+        } else {
+          setErrors(prev => {
+            return {...prev, [name]: null};
+          });
+        }
+      } else {
+        setErrors(prev => {
+          return {...prev, [name]: null};
+        });
+      }
+    } else {
+      setErrors(prev => {
+        return {...prev, [name]: 'This field is required.'};
+      });
+    }
+    setForm({...form, [name]: value});
+  }
+
+  function onSubmit() {
+    if (!form.userName) {
+      setErrors(prev => {
+        return {...prev, userName: 'Please enter a username.'};
+      });
+    }
+    if (!form.firstName) {
+      setErrors(prev => {
+        return {...prev, firstName: 'Please enter your first name.'};
+      });
+    }
+    if (!form.lastName) {
+      setErrors(prev => {
+        return {...prev, lastName: 'Please enter your last name.'};
+      });
+    }
+    if (!form.email) {
+      setErrors(prev => {
+        return {...prev, email: 'Please enter your email.'};
+      });
+    }
+    if (!form.password) {
+      setErrors(prev => {
+        return {...prev, password: 'Please enter a passsword.'};
+      });
+    }
+  }
+
   return (
     <CommonContainer>
       <View>
@@ -15,21 +74,37 @@ export default function SignUpScreen({navigation}) {
             label="Username"
             placeholder="Enter Username"
             placeholderTextColor={COLORS.white}
+            onChangeText={value => {
+              onChange({name: 'userName', value: value});
+            }}
+            error={errors.userName}
           />
           <CommonTextInput
             label="First Name"
             placeholder="Enter First Name"
             placeholderTextColor={COLORS.white}
+            onChangeText={value => {
+              onChange({name: 'firstName', value: value});
+            }}
+            error={errors.firstName}
           />
           <CommonTextInput
             label="Last Name"
             placeholder="Enter Last Name"
             placeholderTextColor={COLORS.white}
+            onChangeText={value => {
+              onChange({name: 'lastName', value: value});
+            }}
+            error={errors.lastName}
           />
           <CommonTextInput
             label="Email"
             placeholder="Enter Email"
             placeholderTextColor={COLORS.white}
+            onChangeText={value => {
+              onChange({name: 'email', value: value});
+            }}
+            error={errors.email}
           />
           <CommonTextInput
             label="Password"
@@ -38,8 +113,12 @@ export default function SignUpScreen({navigation}) {
             secureTextEntry={true}
             icon={<Text style={{color: COLORS.white}}>SHOW</Text>}
             iconPosition="right"
+            onChangeText={value => {
+              onChange({name: 'password', value: value});
+            }}
+            error={errors.password}
           />
-          <CommonButton title="Submit" white />
+          <CommonButton title="Submit" white onPress={onSubmit} />
           <View style={styles.createSection}>
             <Text style={styles.infoText}>Already have an Account?</Text>
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
