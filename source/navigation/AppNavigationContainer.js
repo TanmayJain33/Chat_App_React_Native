@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import AuthStackNavigator from './AuthStackNavigator';
+import StackNavigator from './StackNavigator';
 
 export default function AppNavigationContainer() {
   return (
     <NavigationContainer>
-      <AuthStackNavigator />
+      <StackNavigator />
     </NavigationContainer>
   );
 }

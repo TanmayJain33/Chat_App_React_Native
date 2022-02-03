@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import CommonContainer from '../components/commonContainer';
 import CommonTextInput from '../components/commonTextInput';
 import CommonButton from '../components/commonButton';
 import COLORS from '../utilities/colors';
+import {GlobalContext} from '../context/Provider';
+import {LOADING_START, LOADING_STOP} from '../context/actionTypes';
 
 export default function LoginScreen({navigation}) {
   const [credentials, setCredentials] = useState({
@@ -12,6 +14,9 @@ export default function LoginScreen({navigation}) {
   });
   const {email, password} = credentials;
   const [errors, setErrors] = useState({});
+
+  const globalState = useContext(GlobalContext);
+  const {loaderDispatch} = globalState;
 
   function onChange({name, value}) {
     if (value != '') {
@@ -31,11 +36,19 @@ export default function LoginScreen({navigation}) {
       setErrors(prev => {
         return {...prev, email: 'Please enter your email.'};
       });
-    }
-    if (!credentials.password) {
+    } else if (!credentials.password) {
       setErrors(prev => {
         return {...prev, password: 'Please enter a passsword.'};
       });
+    } else {
+      loaderDispatch({
+        type: LOADING_START,
+      });
+      setTimeout(() => {
+        loaderDispatch({
+          type: LOADING_STOP,
+        });
+      }, 2000);
     }
   }
 
