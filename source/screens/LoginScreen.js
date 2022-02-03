@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import CommonContainer from '../components/commonContainer';
 import CommonTextInput from '../components/commonTextInput';
@@ -6,6 +6,39 @@ import CommonButton from '../components/commonButton';
 import COLORS from '../utilities/colors';
 
 export default function LoginScreen({navigation}) {
+  const [credentials, setCredentials] = useState({
+    email: '',
+    password: '',
+  });
+  const {email, password} = credentials;
+  const [errors, setErrors] = useState({});
+
+  function onChange({name, value}) {
+    if (value != '') {
+      setErrors(prev => {
+        return {...prev, [name]: null};
+      });
+    } else {
+      setErrors(prev => {
+        return {...prev, [name]: 'This field is required.'};
+      });
+    }
+    setCredentials({...credentials, [name]: value});
+  }
+
+  function onSubmit() {
+    if (!credentials.email) {
+      setErrors(prev => {
+        return {...prev, email: 'Please enter your email.'};
+      });
+    }
+    if (!credentials.password) {
+      setErrors(prev => {
+        return {...prev, password: 'Please enter a passsword.'};
+      });
+    }
+  }
+
   return (
     <CommonContainer>
       <Image
@@ -21,6 +54,11 @@ export default function LoginScreen({navigation}) {
           label="Email"
           placeholder="Enter Email"
           placeholderTextColor={COLORS.white}
+          value={email}
+          onChangeText={value => {
+            onChange({name: 'email', value: value});
+          }}
+          error={errors.email}
         />
         <CommonTextInput
           label="Password"
@@ -29,8 +67,13 @@ export default function LoginScreen({navigation}) {
           secureTextEntry={true}
           icon={<Text style={{color: COLORS.white}}>SHOW</Text>}
           iconPosition="right"
+          value={password}
+          onChangeText={value => {
+            onChange({name: 'password', value: value});
+          }}
+          error={errors.password}
         />
-        <CommonButton title="Submit" white />
+        <CommonButton title="Submit" white onPress={onSubmit} />
         <View style={styles.createSection}>
           <Text style={styles.infoText}>Need a new Account?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Sign Up')}>

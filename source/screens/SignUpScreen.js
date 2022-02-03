@@ -6,7 +6,13 @@ import CommonButton from '../components/commonButton';
 import COLORS from '../utilities/colors';
 
 export default function SignUpScreen({navigation}) {
-  const [form, setForm] = useState({});
+  const [credentials, setCredentials] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const {name, email, password, confirmPassword} = credentials;
   const [errors, setErrors] = useState({});
 
   function onChange({name, value}) {
@@ -34,33 +40,28 @@ export default function SignUpScreen({navigation}) {
         return {...prev, [name]: 'This field is required.'};
       });
     }
-    setForm({...form, [name]: value});
+    setCredentials({...credentials, [name]: value});
   }
 
   function onSubmit() {
-    if (!form.userName) {
+    if (!credentials.name) {
       setErrors(prev => {
-        return {...prev, userName: 'Please enter a username.'};
+        return {...prev, name: 'Please enter your name.'};
       });
     }
-    if (!form.firstName) {
-      setErrors(prev => {
-        return {...prev, firstName: 'Please enter your first name.'};
-      });
-    }
-    if (!form.lastName) {
-      setErrors(prev => {
-        return {...prev, lastName: 'Please enter your last name.'};
-      });
-    }
-    if (!form.email) {
+    if (!credentials.email) {
       setErrors(prev => {
         return {...prev, email: 'Please enter your email.'};
       });
     }
-    if (!form.password) {
+    if (!credentials.password) {
       setErrors(prev => {
         return {...prev, password: 'Please enter a passsword.'};
+      });
+    }
+    if (credentials.password != credentials.confirmPassword) {
+      setErrors(prev => {
+        return {...prev, confirmPassword: 'Password does not match.'};
       });
     }
   }
@@ -71,31 +72,14 @@ export default function SignUpScreen({navigation}) {
         <Text style={styles.subTitle}>Create a free account</Text>
         <View style={styles.form}>
           <CommonTextInput
-            label="Username"
-            placeholder="Enter Username"
+            label="Name"
+            placeholder="Enter Name"
             placeholderTextColor={COLORS.white}
             onChangeText={value => {
-              onChange({name: 'userName', value: value});
+              onChange({name: 'name', value: value});
             }}
-            error={errors.userName}
-          />
-          <CommonTextInput
-            label="First Name"
-            placeholder="Enter First Name"
-            placeholderTextColor={COLORS.white}
-            onChangeText={value => {
-              onChange({name: 'firstName', value: value});
-            }}
-            error={errors.firstName}
-          />
-          <CommonTextInput
-            label="Last Name"
-            placeholder="Enter Last Name"
-            placeholderTextColor={COLORS.white}
-            onChangeText={value => {
-              onChange({name: 'lastName', value: value});
-            }}
-            error={errors.lastName}
+            error={errors.name}
+            value={name}
           />
           <CommonTextInput
             label="Email"
@@ -105,6 +89,7 @@ export default function SignUpScreen({navigation}) {
               onChange({name: 'email', value: value});
             }}
             error={errors.email}
+            value={email}
           />
           <CommonTextInput
             label="Password"
@@ -117,6 +102,20 @@ export default function SignUpScreen({navigation}) {
               onChange({name: 'password', value: value});
             }}
             error={errors.password}
+            value={password}
+          />
+          <CommonTextInput
+            label="Confirm Password"
+            placeholder="Confirm Password"
+            placeholderTextColor={COLORS.white}
+            secureTextEntry={true}
+            icon={<Text style={{color: COLORS.white}}>SHOW</Text>}
+            iconPosition="right"
+            onChangeText={value => {
+              onChange({name: 'confirmPassword', value: value});
+            }}
+            error={errors.confirmPassword}
+            value={confirmPassword}
           />
           <CommonButton title="Submit" white onPress={onSubmit} />
           <View style={styles.createSection}>
