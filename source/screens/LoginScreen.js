@@ -6,6 +6,7 @@ import CommonButton from '../components/commonButton';
 import COLORS from '../utilities/colors';
 import {GlobalContext} from '../context/Provider';
 import {LOADING_START, LOADING_STOP} from '../context/actionTypes';
+import {AuthContext} from '../navigation/AuthProvider';
 
 export default function LoginScreen({navigation}) {
   const [credentials, setCredentials] = useState({
@@ -17,6 +18,8 @@ export default function LoginScreen({navigation}) {
 
   const globalState = useContext(GlobalContext);
   const {loaderDispatch} = globalState;
+
+  const {login} = useContext(AuthContext);
 
   function onChange({name, value}) {
     if (value != '') {
@@ -31,7 +34,7 @@ export default function LoginScreen({navigation}) {
     setCredentials({...credentials, [name]: value});
   }
 
-  function onSubmit() {
+  function onSubmit(email, password) {
     if (!credentials.email) {
       setErrors(prev => {
         return {...prev, email: 'Please enter your email.'};
@@ -49,6 +52,13 @@ export default function LoginScreen({navigation}) {
           type: LOADING_STOP,
         });
       }, 2000);
+    }
+    if (
+      Object.values(credentials).every(item => item.trim().length > 0) &&
+      Object.values(credentials).length == 2 &&
+      Object.values(errors).every(item => !item)
+    ) {
+      login(email, password);
     }
   }
 
@@ -68,6 +78,19 @@ export default function LoginScreen({navigation}) {
           placeholder="Enter Email"
           placeholderTextColor={COLORS.white}
           value={email}
+          icon={
+            <Image
+              source={require('../../assets/email.png')}
+              style={{
+                tintColor: COLORS.white,
+                width: 15,
+                height: 15,
+                marginRight: 12,
+                marginLeft: 3,
+              }}
+            />
+          }
+          iconPosition="left"
           onChangeText={value => {
             onChange({name: 'email', value: value});
           }}
@@ -78,15 +101,29 @@ export default function LoginScreen({navigation}) {
           placeholder="Enter Password"
           placeholderTextColor={COLORS.white}
           secureTextEntry={true}
-          icon={<Text style={{color: COLORS.white}}>SHOW</Text>}
-          iconPosition="right"
+          icon={
+            <Image
+              source={require('../../assets/padlock.png')}
+              style={{
+                tintColor: COLORS.white,
+                width: 20,
+                height: 20,
+                marginRight: 10,
+              }}
+            />
+          }
+          iconPosition="left"
           value={password}
           onChangeText={value => {
             onChange({name: 'password', value: value});
           }}
           error={errors.password}
         />
-        <CommonButton title="Submit" white onPress={onSubmit} />
+        <CommonButton
+          title="Submit"
+          white
+          onPress={() => onSubmit(credentials.email, credentials.password)}
+        />
         <View style={styles.createSection}>
           <Text style={styles.infoText}>Need a new Account?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Sign Up')}>

@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useState, useContext} from 'react';
+import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import CommonContainer from '../components/commonContainer';
 import CommonTextInput from '../components/commonTextInput';
 import CommonButton from '../components/commonButton';
 import COLORS from '../utilities/colors';
+import {AuthContext} from '../navigation/AuthProvider';
 
 export default function SignUpScreen({navigation}) {
   const [credentials, setCredentials] = useState({
@@ -14,6 +15,7 @@ export default function SignUpScreen({navigation}) {
   });
   const {name, email, password, confirmPassword} = credentials;
   const [errors, setErrors] = useState({});
+  const {signup} = useContext(AuthContext);
 
   function onChange({name, value}) {
     if (value != '') {
@@ -43,7 +45,7 @@ export default function SignUpScreen({navigation}) {
     setCredentials({...credentials, [name]: value});
   }
 
-  function onSubmit() {
+  function onSubmit(email, password) {
     if (!credentials.name) {
       setErrors(prev => {
         return {...prev, name: 'Please enter your name.'};
@@ -64,6 +66,13 @@ export default function SignUpScreen({navigation}) {
         return {...prev, confirmPassword: 'Password does not match.'};
       });
     }
+    if (
+      Object.values(credentials).every(item => item.trim().length > 0) &&
+      Object.values(credentials).length == 4 &&
+      Object.values(errors).every(item => !item)
+    ) {
+      signup(email, password);
+    }
   }
 
   return (
@@ -75,6 +84,19 @@ export default function SignUpScreen({navigation}) {
             label="Name"
             placeholder="Enter Name"
             placeholderTextColor={COLORS.white}
+            icon={
+              <Image
+                source={require('../../assets/user.png')}
+                style={{
+                  tintColor: COLORS.white,
+                  width: 15,
+                  height: 15,
+                  marginRight: 12,
+                  marginLeft: 3,
+                }}
+              />
+            }
+            iconPosition="left"
             onChangeText={value => {
               onChange({name: 'name', value: value});
             }}
@@ -85,6 +107,19 @@ export default function SignUpScreen({navigation}) {
             label="Email"
             placeholder="Enter Email"
             placeholderTextColor={COLORS.white}
+            icon={
+              <Image
+                source={require('../../assets/email.png')}
+                style={{
+                  tintColor: COLORS.white,
+                  width: 15,
+                  height: 15,
+                  marginRight: 12,
+                  marginLeft: 3,
+                }}
+              />
+            }
+            iconPosition="left"
             onChangeText={value => {
               onChange({name: 'email', value: value});
             }}
@@ -96,8 +131,18 @@ export default function SignUpScreen({navigation}) {
             placeholder="Enter Password"
             placeholderTextColor={COLORS.white}
             secureTextEntry={true}
-            icon={<Text style={{color: COLORS.white}}>SHOW</Text>}
-            iconPosition="right"
+            icon={
+              <Image
+                source={require('../../assets/padlock.png')}
+                style={{
+                  tintColor: COLORS.white,
+                  width: 20,
+                  height: 20,
+                  marginRight: 10,
+                }}
+              />
+            }
+            iconPosition="left"
             onChangeText={value => {
               onChange({name: 'password', value: value});
             }}
@@ -109,15 +154,29 @@ export default function SignUpScreen({navigation}) {
             placeholder="Confirm Password"
             placeholderTextColor={COLORS.white}
             secureTextEntry={true}
-            icon={<Text style={{color: COLORS.white}}>SHOW</Text>}
-            iconPosition="right"
+            icon={
+              <Image
+                source={require('../../assets/padlock.png')}
+                style={{
+                  tintColor: COLORS.white,
+                  width: 20,
+                  height: 20,
+                  marginRight: 10,
+                }}
+              />
+            }
+            iconPosition="left"
             onChangeText={value => {
               onChange({name: 'confirmPassword', value: value});
             }}
             error={errors.confirmPassword}
             value={confirmPassword}
           />
-          <CommonButton title="Submit" white onPress={onSubmit} />
+          <CommonButton
+            title="Submit"
+            white
+            onPress={() => onSubmit(credentials.email, credentials.password)}
+          />
           <View style={styles.createSection}>
             <Text style={styles.infoText}>Already have an Account?</Text>
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
