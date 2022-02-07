@@ -11,6 +11,15 @@ target 'ChatApp' do
     # to enable hermes on iOS, change `false` to `true` and then install pods
     :hermes_enabled => false
   )
+  
+  target 'ChatAppDevelopment' do
+    end
+  
+  target 'ChatAppStaging' do
+    end
+  
+  target 'ChatAppProduction' do
+    end
 
   target 'ChatAppTests' do
     inherit! :complete
