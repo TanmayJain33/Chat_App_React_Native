@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import {Alert, SafeAreaView, Text} from 'react-native';
 import CommonButton from '../components/commonButton';
 import {AuthContext} from '../navigation/AuthProvider';
 
@@ -9,7 +9,19 @@ export default function HomeScreen() {
   return (
     <SafeAreaView>
       <Text>Welcome {user.uid}</Text>
-      <CommonButton title="Log Out" black onPress={() => logout()} />
+      <CommonButton
+        title="Log Out"
+        black
+        onPress={() =>
+          Alert.alert('Logout', 'Are you sure you want to logout?', [
+            {
+              text: 'Yes',
+              onPress: () => logout(),
+            },
+            {text: 'No'},
+          ])
+        }
+      />
     </SafeAreaView>
   );
 }
