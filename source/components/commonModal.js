@@ -11,14 +11,9 @@ export default function CommonModal({
 }) {
   return (
     <SafeAreaView>
-      <CommonButton
-        title="Logout"
-        black
-        onPress={() => setModalVisible(true)}
-      />
       <AppModal
-        title="Logout"
-        subTitle="Are you sure you want to logout?"
+        title={title}
+        subTitle={subTitle}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />

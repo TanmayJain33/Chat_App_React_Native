@@ -1,19 +1,22 @@
-import React, {useContext, useState} from 'react';
-import {SafeAreaView, Text} from 'react-native';
-import CommonModal from '../components/commonModal';
-import {AuthContext} from '../navigation/AuthProvider';
+import React from 'react';
+import {SafeAreaView, Text, View} from 'react-native';
+import CommonContainer from '../components/commonContainer';
+import COLORS from '../utilities/colors';
 
 export default function HomeScreen() {
-  const {user} = useContext(AuthContext);
-  const [modalVisible, setModalVisible] = useState(false);
-
   return (
-    <SafeAreaView>
-      <Text>Welcome {user.uid}</Text>
-      <CommonModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
+    <>
+      <View
+        style={{
+          backgroundColor: COLORS.white,
+          height: 1,
+        }}
       />
-    </SafeAreaView>
+      <CommonContainer>
+        <SafeAreaView>
+          <Text style={{color: COLORS.white}}>Welcome Tanmay</Text>
+        </SafeAreaView>
+      </CommonContainer>
+    </>
   );
 }

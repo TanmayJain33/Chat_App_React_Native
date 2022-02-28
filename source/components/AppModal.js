@@ -18,15 +18,17 @@ export default function AppModal({
         style={{
           flex: 1,
           justifyContent: 'center',
-          backgroundColor: 'rgba(0,0,0,0.6)',
+          backgroundColor: 'rgba(0,0,0,0.5)',
         }}
         onPress={() => setModalVisible(false)}>
         <View
           style={{
-            backgroundColor: COLORS.black,
+            backgroundColor: 'rgba(0,0,0,0.8)',
             height: 160,
             marginHorizontal: 20,
             borderRadius: 15,
+            borderColor: COLORS.white,
+            borderWidth: 1,
           }}>
           <View style={{marginVertical: 20}}>
             <Text
