@@ -1,9 +1,21 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
-import {HOME} from '../utilities/routeNames';
-import COLORS from '../utilities/colors';
+import PermissionsScreen from '../screens/PermissionsScreen';
+import PreviewImageScreen from '../screens/PreviewImageScreen';
+import CameraScreen from '../screens/CameraScreen';
+import CallScreen from '../screens/CallScreen';
+import ContactScreen from '../screens/ContactScreen';
+import {
+  HOME,
+  PERMISSIONS,
+  CAMERA,
+  PREVIEW_IMAGE,
+  CALL,
+  CONTACT,
+} from '../utilities/routeNames';
 import Header from '../components/header';
+import COLORS from '../utilities/colors';
 
 const HomeStack = createStackNavigator();
 
@@ -16,12 +28,48 @@ export default function HomeStackNavigator() {
         headerStyle: {
           backgroundColor: 'rgba(0,0,0, 0.8)',
         },
+        headerTintColor: COLORS.white,
       }}>
       <HomeStack.Screen
         name={HOME}
         component={HomeScreen}
         options={{
-          headerTitle: () => <Header />,
+          headerTitle: () => <Header title="Chattingaza" />,
+        }}
+      />
+      <HomeStack.Screen
+        name={PERMISSIONS}
+        component={PermissionsScreen}
+        options={{
+          headerTitle: () => <Header title="Permissions Demo" />,
+        }}
+      />
+      <HomeStack.Screen
+        name={CAMERA}
+        component={CameraScreen}
+        options={{
+          headerTitle: () => <Header title="Camera" />,
+        }}
+      />
+      <HomeStack.Screen
+        name={PREVIEW_IMAGE}
+        component={PreviewImageScreen}
+        options={{
+          headerTitle: () => <Header title="Preview Image" />,
+        }}
+      />
+      <HomeStack.Screen
+        name={CALL}
+        component={CallScreen}
+        options={{
+          headerTitle: () => <Header title="Call" />,
+        }}
+      />
+      <HomeStack.Screen
+        name={CONTACT}
+        component={ContactScreen}
+        options={{
+          headerTitle: () => <Header title="Contacts" />,
         }}
       />
     </HomeStack.Navigator>

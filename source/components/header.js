@@ -3,7 +3,7 @@ import {Text, View, Image, TouchableOpacity} from 'react-native';
 import COLORS from '../utilities/colors';
 import MenuModal from '../components/menuModal';
 
-export default function Header() {
+export default function Header({title}) {
   const [menuModalVisible, setMenuModalVisible] = useState(false);
 
   return (
@@ -34,7 +34,7 @@ export default function Header() {
             color: '#fff',
             letterSpacing: 1,
           }}>
-          Chattingaza
+          {title}
         </Text>
       </View>
       <MenuModal
