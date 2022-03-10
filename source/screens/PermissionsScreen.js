@@ -1,15 +1,23 @@
 import React from 'react';
-import {SafeAreaView, View, Linking} from 'react-native';
+import {SafeAreaView, View, Linking, PermissionsAndroid} from 'react-native';
 import CommonContainer from '../components/commonContainer';
 import COLORS from '../utilities/colors';
 import CommonButton from '../components/commonButton';
-import {CAMERA, CALL, CONTACT} from '../utilities/routeNames';
+import {
+  CAMERA,
+  CALL,
+  CONTACT,
+  AUDIO,
+  MESSAGE,
+  GEOLOCATION,
+} from '../utilities/routeNames';
 import {
   PERMISSIONS,
   RESULTS,
   requestMultiple,
   checkMultiple,
 } from 'react-native-permissions';
+import Contacts from 'react-native-contacts';
 
 export default function PermissionsScreen({navigation}) {
   const PressHandler = () => {
@@ -24,6 +32,16 @@ export default function PermissionsScreen({navigation}) {
     requestMultiple([
       PERMISSIONS.ANDROID.READ_CALENDAR,
       PERMISSIONS.ANDROID.WRITE_CALENDAR,
+    ]).then(response => {
+      console.log(response);
+    });
+  };
+
+  const requestPermissions = () => {
+    requestMultiple([
+      PERMISSIONS.ANDROID.RECORD_AUDIO,
+      PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+      PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
     ]).then(response => {
       console.log(response);
     });
@@ -45,7 +63,45 @@ export default function PermissionsScreen({navigation}) {
   };
 
   const ContactsPressHandler = () => {
-    navigation.navigate(CONTACT);
+    PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
+      title: 'Contacts',
+      message: 'This app would like to view your contacts.',
+      buttonPositive: 'Please accept bare mortal',
+    }).then(
+      Contacts.getAll()
+        .then(contacts => {
+          console.log(contacts);
+          navigation.navigate(CONTACT, contacts);
+        })
+        .catch(e => {
+          console.log(e);
+        }),
+    );
+  };
+
+  const AudioPressHandler = () => {
+    requestPermissions();
+    checkMultiple([
+      PERMISSIONS.ANDROID.RECORD_AUDIO,
+      PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+      PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+    ]).then(result => {
+      if (
+        result[PERMISSIONS.ANDROID.RECORD_AUDIO] === RESULTS.GRANTED &&
+        result[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] === RESULTS.GRANTED &&
+        result[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] === RESULTS.GRANTED
+      ) {
+        navigation.navigate(AUDIO);
+      }
+    });
+  };
+
+  const MessagePressHandler = () => {
+    navigation.navigate(MESSAGE);
+  };
+
+  const GeoLocationPressHandler = () => {
+    navigation.navigate(GEOLOCATION);
   };
 
   return (
@@ -62,6 +118,17 @@ export default function PermissionsScreen({navigation}) {
           <CommonButton title="Call" white onPress={CallPressHandler} />
           <CommonButton title="Calendar" white onPress={CalendarPressHandler} />
           <CommonButton title="Contacts" white onPress={ContactsPressHandler} />
+          <CommonButton
+            title="Audio Recoder"
+            white
+            onPress={AudioPressHandler}
+          />
+          <CommonButton title="Message" white onPress={MessagePressHandler} />
+          <CommonButton
+            title="Geolocation with GPS implement maps"
+            white
+            onPress={GeoLocationPressHandler}
+          />
         </SafeAreaView>
       </CommonContainer>
     </>

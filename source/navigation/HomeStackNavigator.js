@@ -6,6 +6,10 @@ import PreviewImageScreen from '../screens/PreviewImageScreen';
 import CameraScreen from '../screens/CameraScreen';
 import CallScreen from '../screens/CallScreen';
 import ContactScreen from '../screens/ContactScreen';
+import AudioRecoderScreen from '../screens/AudioRecoderScreen';
+import MessageScreen from '../screens/MessageScreen';
+import GeolocationScreen from '../screens/GeolocationScreen';
+import MapScreen from '../screens/MapScreen';
 import {
   HOME,
   PERMISSIONS,
@@ -13,6 +17,10 @@ import {
   PREVIEW_IMAGE,
   CALL,
   CONTACT,
+  AUDIO,
+  MESSAGE,
+  GEOLOCATION,
+  RENDERMAP,
 } from '../utilities/routeNames';
 import Header from '../components/header';
 import COLORS from '../utilities/colors';
@@ -70,6 +78,34 @@ export default function HomeStackNavigator() {
         component={ContactScreen}
         options={{
           headerTitle: () => <Header title="Contacts" />,
+        }}
+      />
+      <HomeStack.Screen
+        name={AUDIO}
+        component={AudioRecoderScreen}
+        options={{
+          headerTitle: () => <Header title="Audio Recoder" />,
+        }}
+      />
+      <HomeStack.Screen
+        name={MESSAGE}
+        component={MessageScreen}
+        options={{
+          headerTitle: () => <Header title="Message" />,
+        }}
+      />
+      <HomeStack.Screen
+        name={GEOLOCATION}
+        component={GeolocationScreen}
+        options={{
+          headerTitle: () => <Header title="Geolocation" />,
+        }}
+      />
+      <HomeStack.Screen
+        name={RENDERMAP}
+        component={MapScreen}
+        options={{
+          headerTitle: () => <Header title="Map" />,
         }}
       />
     </HomeStack.Navigator>

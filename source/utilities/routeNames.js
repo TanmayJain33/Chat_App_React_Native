@@ -6,3 +6,7 @@ export const CAMERA = 'Camera';
 export const PREVIEW_IMAGE = 'PreviewImage';
 export const CALL = 'Call';
 export const CONTACT = 'Contact';
+export const AUDIO = 'Audio';
+export const MESSAGE = 'Message';
+export const GEOLOCATION = 'Geolocation';
+export const RENDERMAP = 'Render Map';
